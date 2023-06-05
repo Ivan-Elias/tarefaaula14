@@ -1,0 +1,118 @@
+class Pessoa {
+  private _nome: string;
+  private _idade: number;
+
+  constructor(nome: string, idade: number) {
+    this._nome = nome;
+    this._idade = idade;
+  }
+
+  get nome(): string {
+    return this._nome;
+  }
+
+  set nome(nome: string) {
+    this._nome = nome;
+  }
+
+  get idade(): number {
+    return this._idade;
+  }
+
+  set idade(idade: number) {
+    this._idade = idade;
+  }
+}
+
+class Paciente extends Pessoa {
+  private _cpf: string;
+  private _historico: string[];
+  private _planoDeSaude: string; // Propriedade para armazenar o nome do plano de saúde
+
+  constructor(nome: string, idade: number, cpf: string) {
+    super(nome, idade);
+    this._cpf = cpf;
+    this._historico = [];
+    this._planoDeSaude = ''; // Inicialmente não possui plano de saúde
+  }
+
+  get cpf(): string {
+    return this._cpf;
+  }
+
+  set cpf(cpf: string) {
+    if (!this.validarCPF(cpf)) {
+      throw new Error("CPF inválido");
+    }
+    this._cpf = cpf;
+  }
+
+  get historico(): string[] {
+    return this._historico;
+  }
+
+  get planoDeSaude(): string {
+    return this._planoDeSaude;
+  }
+
+  set planoDeSaude(planoDeSaude: string) {
+    this._planoDeSaude = planoDeSaude;
+  }
+
+  adicionarEntradaHistorico(descricao: string): void {
+    const entrada = `${new Date().toISOString()}: ${descricao}`;
+    this._historico.push(entrada);
+  }
+
+  exibirHistorico(): void {
+    console.log(`Histórico médico de ${this.nome}:`);
+    this._historico.forEach((entrada, index) => {
+      console.log(`${index + 1}. ${entrada}`);
+    });
+  }
+
+  private validarCPF(cpf: string): boolean {
+    // Implemente aqui a lógica real de validação do CPF
+    // Retorne true se o CPF for válido, ou false caso contrário
+    // Exemplo de validação fictícia:
+    return /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf);
+  }
+}
+
+class Medico extends Pessoa {
+  private _crm: string;
+
+  constructor(nome: string, idade: number, crm: string) {
+    super(nome, idade);
+    this._crm = crm;
+  }
+
+  get crm(): string {
+    return this._crm;
+  }
+
+  set crm(crm: string) {
+    this._crm = crm;
+  }
+}
+
+// Exemplo de uso
+const paciente1 = new Paciente("João", 35, "123.456.789-00");
+paciente1.adicionarEntradaHistorico("Consulta de rotina");
+paciente1.adicionarEntradaHistorico("Prescrição de medicamento");
+paciente1.nome = "José";
+paciente1.idade = 40;
+console.log(`Nome do paciente: ${paciente1.nome}`);
+console.log(`Idade do paciente: ${paciente1.idade}`);
+console.log(`CPF do paciente: ${paciente1.cpf}`);
+paciente1.exibirHistorico();
+
+paciente1.planoDeSaude = "Plano A"; // Definindo o plano de saúde do paciente
+console.log(`Plano de saúde do paciente: ${paciente1.planoDeSaude}`);
+
+const medico1 = new Medico("Dr. Silva", 45, "12345");
+medico1.nome = "Dr. Souza";
+medico1.idade = 50;
+console.log(`Nome do médico: ${medico1.nome}`);
+console.log(`Idade do médico: ${medico1.idade}`);
+console.log(`CRM do médico: ${medico1.crm}`);
